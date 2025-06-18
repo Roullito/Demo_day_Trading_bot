@@ -1,4 +1,3 @@
-````markdown
 # 🤖 Smart Trading Bot – Holberton Final Project (Year 1)
 
 ## 📌 Project Description
@@ -24,28 +23,30 @@ Later versions will support **AI/ML integration** for learning from trade histor
 ### 📦 Package Diagram
 ```mermaid
 graph TD
-    Bot[bot.py (Main Controller)]
+    BotMainController["bot_main_controller"]
 
     subgraph indicators
-        RSI[RSI]
-        MACD[MACD]
+        RSI
+        MACD
+        etc...
     end
 
     subgraph strategies
-        DCA[DCA_Strategy]
-        Combo[MACD_RSI_Combo]
+        DCA_Strategy
+        MACD_RSI_Combo
+        etc...
     end
 
     subgraph data
-        Fetcher[MarketDataFetcher]
+        MarketDataFetcher
         Serializer
-        History[HistoricalData]
+        HistoricalData
     end
 
     subgraph trading
-        Orders[OrderExecutor]
-        Active[PositionTracker]
-        PnL[ProfitLossCalc]
+        OrderExecutor
+        PositionTracker
+        ProfitLossCalc
     end
 
     subgraph logs
@@ -53,85 +54,82 @@ graph TD
     end
 
     subgraph ui
-        UI[DisplayConsole]
+        DisplayConsole
     end
 
     subgraph ai
-        AI_Module[Future AI/ML]
+        Future_AI_Module
     end
 
-    Bot --> indicators
-    Bot --> strategies
-    Bot --> data
-    Bot --> trading
-    Bot --> logs
-    Bot --> ui
-    Bot --> ai
+    BotMainController --> indicators
+    BotMainController --> strategies
+    BotMainController --> data
+    BotMainController --> trading
+    BotMainController --> logs
+    BotMainController --> ui
+    BotMainController --> ai
 
     strategies --> indicators
     trading --> data
     ui --> logs
     ai --> logs
 ````
-
-````
-
 ---
 
 ## 🧩 Class Diagram (Simplified)
 ```mermaid
 classDiagram
-    class MarketDataFetcher {
-        +get_ohlcv(pair, timeframe)
-        +get_open_positions()
-    }
 
-    class Indicator {
-        <<abstract>>
-        +compute(data)
-    }
-    class RSI {
-        +compute(data)
-    }
-    class MACD {
-        +compute(data)
-    }
+class MarketDataFetcher {
+    +get_ohlcv(pair, timeframe)
+    +get_open_positions()
+}
 
-    class Strategy {
-        <<abstract>>
-        +evaluate_signals()
-    }
-    class DCA_Strategy {
-        +evaluate_signals()
-    }
-    class MACD_RSI_Combo {
-        +evaluate_signals()
-    }
+class Indicator {
+    <<abstract>>
+    +compute(data)
+}
+class RSI {
+    +compute(data)
+}
+class MACD {
+    +compute(data)
+}
 
-    class TradeExecutor {
-        +place_order()
-        +set_stop_loss()
-    }
+class Strategy {
+    <<abstract>>
+    +evaluate_signals()
+}
+class DCA_Strategy {
+    +evaluate_signals()
+}
+class MACD_RSI_Combo {
+    +evaluate_signals()
+}
 
-    class Logger {
-        +log_event(event)
-        +save_to_file()
-    }
+class TradeExecutor {
+    +place_order()
+    +set_stop_loss()
+    +set_take_profit()
+}
 
-    class UI {
-        +display_action(action)
-        +show_trade_summary()
-    }
+class Logger {
+    +log_event(event)
+    +save_to_file()
+}
 
-    MarketDataFetcher --> RSI
-    MarketDataFetcher --> MACD
-    RSI --> Strategy
-    MACD --> Strategy
-    Strategy --> TradeExecutor
-    TradeExecutor --> Logger
-    Logger --> UI
-````
+class UI {
+    +display_action(action)
+    +show_trade_summary()
+}
 
+MarketDataFetcher --> RSI
+MarketDataFetcher --> MACD
+Strategy <|-- DCA_Strategy
+Strategy <|-- MACD_RSI_Combo
+Strategy --> TradeExecutor
+TradeExecutor --> Logger
+Logger --> UI
 ````
 
 ---
@@ -166,9 +164,6 @@ sequenceDiagram
     Bot->>Logger: log_event()
     Logger-->>UI: display_action()
 ````
-
-```
-
 ---
 
 ## 🚀 Technologies
@@ -195,4 +190,3 @@ Project made by Jules MOLEINS, student at Holberton School (France)
 
 ## 📜 License
 MIT License – for educational and personal use
-```
