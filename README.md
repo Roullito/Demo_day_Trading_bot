@@ -28,13 +28,13 @@ graph TD
     subgraph indicators
         RSI
         MACD
-        etc...
+        PlaceholderIndicator
     end
 
     subgraph strategies
         DCA_Strategy
         MACD_RSI_Combo
-        etc...
+        PlaceholderStrategy
     end
 
     subgraph data
@@ -73,12 +73,15 @@ graph TD
     trading --> data
     ui --> logs
     ai --> logs
+
 ````
 ---
 
 ## 🧩 Class Diagram (Simplified)
 ```mermaid
 classDiagram
+
+%% === CLASSES ===
 
 class MarketDataFetcher {
     +get_ohlcv(pair, timeframe)
@@ -89,22 +92,26 @@ class Indicator {
     <<abstract>>
     +compute(data)
 }
+
 class RSI {
     +compute(data)
 }
+
 class MACD {
     +compute(data)
 }
 
 class Strategy {
     <<abstract>>
-    +evaluate_signals()
+    +evaluate_signals(indicators)
 }
+
 class DCA_Strategy {
-    +evaluate_signals()
+    +evaluate_signals(indicators)
 }
+
 class MACD_RSI_Combo {
-    +evaluate_signals()
+    +evaluate_signals(indicators)
 }
 
 class TradeExecutor {
@@ -123,13 +130,22 @@ class UI {
     +show_trade_summary()
 }
 
-MarketDataFetcher --> RSI
-MarketDataFetcher --> MACD
+%% === HERITAGE ===
+
+Indicator <|-- RSI
+Indicator <|-- MACD
 Strategy <|-- DCA_Strategy
 Strategy <|-- MACD_RSI_Combo
-Strategy --> TradeExecutor
-TradeExecutor --> Logger
-Logger --> UI
+
+%% === RELATIONS ===
+
+MarketDataFetcher --> Strategy : provides data
+Strategy --> Indicator : uses
+Strategy --> TradeExecutor : triggers trades
+TradeExecutor --> Logger : logs execution
+Logger --> UI : displays output
+
+
 ````
 
 ---
@@ -164,6 +180,21 @@ sequenceDiagram
     Bot->>Logger: log_event()
     Logger-->>UI: display_action()
 ````
+---
+
+## 🛠️ Project Roadmap (v1)
+
+- [x] Define project goal and architecture
+- [x] Create UML diagrams (Package, Class, Sequence)
+- [ ] Implement `MarketDataFetcher` (Bitget API integration)
+- [ ] Create technical indicators (RSI, MACD)
+- [ ] Implement base strategies (DCA, MACD + RSI combo)
+- [ ] Build `TradeExecutor` for live orders
+- [ ] Add logging system (`Logger`)
+- [ ] Develop simple UI output (console display)
+- [ ] Build `bot.py` main loop controller
+- [ ] Test full trading flow on sandbox
+
 ---
 
 ## 🚀 Technologies
